@@ -1,47 +1,51 @@
-void solve(){
-	vector<tuple<ll,ll,ll>> query(m); // node,color,index
-	fo(i,m){
-		ll a,b;// node below a appearing atleast b times
-		cin>>a>>b;
-		query[i]={a,b,i};
-	}
-	
-	flatten(1,-1,edge);// flattent the tree
-	
-	sort(query.begin(),query.end(),comp); // sort as in mos algorithm
-	
-	ll l=1;
-	ll r=0;
-	fo(i,m){
-		ll ql=s[get<0>(query[i])]; //node in the flatten tree 
-		ll qr=e[get<0>(query[i])];//node in the flatten tree 
-		ll times=get<1>(query[i]);// min times to occur
-		ll index=get<2>(query[i]); 
-		
-		while(ql<l){
-			l--;
-			add(l,vec);
-		}
-		while(qr>r){
-			r++;
-			add(r,vec);
-		}
-		
-		
-		
-		while(ql>l){
-			remove(l,vec);
-			l++;
-		}
-		
-		while(qr<r){
-			remove(r,vec);
-			r--;
-		}
-		
-		ans[index]=findans(times);
-	}
-	
-	fo(i,m) cout<<ans[i]<<endl;
-	
+bool cmp(pair<int, int> p, pair<int, int> q) {
+    if (p.first / BLOCK_SIZE != q.first / BLOCK_SIZE)
+        return p < q;
+    return (p.first / BLOCK_SIZE & 1) ? (p.second < q.second) : (p.second > q.second);
+}
+
+void remove(idx);  // TODO: remove value at idx from data structure
+void add(idx);     // TODO: add value at idx from data structure
+int get_answer();  // TODO: extract the current answer of the data structure
+
+int block_size;
+
+struct Query {
+    int l, r, idx;
+    bool operator<(Query other) const
+    {
+        return make_pair(l / block_size, r) <
+               make_pair(other.l / block_size, other.r);
+    }
+};
+
+vector<int> mo_s_algorithm(vector<Query> queries) {
+    vector<int> answers(queries.size());
+    sort(queries.begin(), queries.end());
+
+    // TODO: initialize data structure
+
+    int cur_l = 0;
+    int cur_r = -1;
+    // invariant: data structure will always reflect the range [cur_l, cur_r]
+    for (Query q : queries) {
+        while (cur_l > q.l) {
+            cur_l--;
+            add(cur_l);
+        }
+        while (cur_r < q.r) {
+            cur_r++;
+            add(cur_r);
+        }
+        while (cur_l < q.l) {
+            remove(cur_l);
+            cur_l++;
+        }
+        while (cur_r > q.r) {
+            remove(cur_r);
+            cur_r--;
+        }
+        answers[q.idx] = get_answer();
+    }
+    return answers;
 }
