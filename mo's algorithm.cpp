@@ -21,7 +21,7 @@ struct Query {
 
 vector<int> mo_s_algorithm(vector<Query> queries) {
     vector<int> answers(queries.size());
-    sort(queries.begin(), queries.end());
+    sort(queries.begin(), queries.end(),cmp);
 
     // TODO: initialize data structure
 
