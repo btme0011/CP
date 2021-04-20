@@ -12,7 +12,7 @@ vector<vector<ll>> mat_mul(vector<vector<ll>> vec1,vector<vector<ll>> vec2){
      }
 }
 
-expo(vector<vector<ll>> a,int b){
+vector<vector<ll>> expo(vector<vector<ll>> a,int b){
            vector<vector<ll>> ans={{1,0},{0,1}};
            while(b>0){
                   if(b%2!=0) {ans=mat_mul(ans,a);b--;}
