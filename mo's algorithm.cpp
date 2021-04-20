@@ -1,3 +1,4 @@
+const BLOCK_SIZE=700;
 bool cmp(pair<int, int> p, pair<int, int> q) {
     if (p.first / BLOCK_SIZE != q.first / BLOCK_SIZE)
         return p < q;
@@ -8,18 +9,9 @@ void remove(idx);  // TODO: remove value at idx from data structure
 void add(idx);     // TODO: add value at idx from data structure
 int get_answer();  // TODO: extract the current answer of the data structure
 
-int block_size;
 
-struct Query {
-    int l, r, idx;
-    bool operator<(Query other) const
-    {
-        return make_pair(l / block_size, r) <
-               make_pair(other.l / block_size, other.r);
-    }
-};
 
-vector<int> mo_s_algorithm(vector<Query> queries) {
+vector<int> mo_s_algorithm(vector<tuple<ll,ll,ll>> queries) {// l,r,idx -> tuple<ll,ll,ll>
     vector<int> answers(queries.size());
     sort(queries.begin(), queries.end(),cmp);
 
