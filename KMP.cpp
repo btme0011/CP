@@ -1,3 +1,8 @@
+// π[i] is the length of the longest proper prefix of the substring s[0…i] which is also a suffix of this substring
+// the values of the prefix function can only increase by at most one
+// "abcabcd" -> [0,0,0,1,2,3,0]     "aabaaab" -> [0,1,0,1,2,2,3].
+// O(n)
+
 vector<int> prefix_function(string s) {
     int n = (int)s.length();
     vector<int> pi(n);
