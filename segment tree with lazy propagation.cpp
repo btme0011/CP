@@ -1,92 +1,70 @@
-ll n; 
-ll seg[4*n];
-ll lazy[4*n];
-ll vec[5]={};// input array
-void create(ll ind,ll l,ll r){
-	if(l==r){
-		seg[ind]=vec[l];
-		return;
+template <typename num_t> 
+struct segtree {
+	int n, depth;
+	vector<num_t> tree, lazy;
+
+	segtree(int s, long long* arr) {
+		n = s;
+		tree = vector<num_t>(4 * s, 0);
+		lazy = vector<num_t>(4 * s, 0);
+		init(0, 0, n - 1, arr);
 	}
-	
-	create(ind*2,l,l+(r-l)/2);
-	create(ind*2+1,l+(r-l)/2+1,r);
-	
-	seg[ind]=seg[ind*2]+seg[ind*2+1];// change
-}
 
+	num_t init(int i, int l, int r, long long* arr) {
+	if (l == r) return tree[i] = arr[l];
 
-// query
-ll query(ll ind,ll ql,ll qr,ll l,ll r){
+	int mid = (l + r) / 2;
+	num_t a = init(2 * i + 1, l, mid, arr),b = init(2 * i + 2, mid + 1, r, arr);
+		return tree[i] = a.op(b);
+	}
+
+	void update(int l, int r, num_t v) {
+		if (l > r) return;
+		update(0, 0, n - 1, l, r, v);
+	}
+
+	num_t update(int i, int tl, int tr, int ql, int qr, num_t v) {
+		eval_lazy(i, tl, tr);
 	
-	if(lazy[ind]!=0){// lazy propagation // change
-		ll dx=lazy[ind];
-		lazy[ind]=0;
-		seg[ind]+=dx*(r-l+1);
-		
-		if(l!=r){
-			lazy[2*ind]+=dx;
-			lazy[2*ind+1]+=dx;
+		if (tl > tr || tr < ql || qr < tl) return tree[i];
+		if (ql <= tl && tr <= qr) {
+			lazy[i] = lazy[i].val + v.val;
+			eval_lazy(i, tl, tr);
+			return tree[i];
 		}
+    
+		if (tl == tr) return tree[i];
+
+		int mid = (tl + tr) / 2;
+		num_t a = update(2 * i + 1, tl, mid, ql, qr, v),
+			b = update(2 * i + 2, mid + 1, tr, ql, qr, v);
+		return tree[i] = a.op(b);
+  }
+
+	num_t query(int l, int r) {
+		if (l > r) return num_t::null_v;
+		return query(0, 0, n-1, l, r);
 	}
-	
-	
-	if(r<ql or l>qr) return 0;// no overlap
-	
-	if(l>=ql and r<=qr) return seg[ind]; // completete overlap
-	
-	// partial overlap
-	ll leftAns=query(2*ind,ql,qr,l,l+(r-l)/2);
-	ll rightAns=query(2*ind+1,ql,qr,l+(r-l)/2+1,r);
-	return leftAns+rightAns;
-}
 
-//update
-void point_update(ll ind,ll upd_ind,ll upd_val,ll l,ll r){
-	if(l==r and r==upd_ind) {seg[ind]+=upd_val;return;}// change how to update the point
-	
-	if(upd_ind>r or upd_ind<l) return;// no overlap
-	
-	update(ind*2,upd_ind,upd_val,l,l+(r-l)/2);
-	update(ind*2+1,upd_ind,upd_val,l+(r-l)/2+1,r);
-	
-	seg[ind]=seg[ind*2]+seg[ind*2+1];// change
-}
+	num_t query(int i, int tl, int tr, int ql, int qr) {
+		eval_lazy(i, tl, tr);
+    
+		if (ql <= tl && tr <= qr) return tree[i];
+		if (tl > tr || tr < ql || qr < tl) return num_t::null_v;
 
-void range_update(ll ind,ll ul,ll ur,ll upd_val,ll l,ll r){
-	
-	if(lazy[ind]!=0){// lazy propagation // change
-		ll dx=lazy[ind];
-		lazy[ind]=0;
-		seg[ind]+=dx*(r-l+1);
-		
-		if(l!=r){
-			lazy[2*ind]+=dx;
-			lazy[2*ind+1]+=dx;
+		int mid = (tl + tr) / 2;
+		num_t a = query(2 * i + 1, tl, mid, ql, qr),
+			b = query(2 * i + 2, mid + 1, tr, ql, qr);
+		return a.op(b);
+	}
+
+	void eval_lazy(int i, int l, int r) {
+		tree[i] = tree[i].lazy_op(lazy[i], (r - l + 1));
+		if (l != r) {
+			lazy[i * 2 + 1] = lazy[i].val + lazy[i * 2 + 1].val;
+			lazy[i * 2 + 2] = lazy[i].val + lazy[i * 2 + 2].val;
 		}
-		return;
+
+		lazy[i] = num_t();
 	}
-	
-	
-	if(r<ul or l>ur) return;// no overlap
-	
-	if(l>=ul and r<=ur){ // completete overlap // change
-		ll dx=(r-l+1)*upd_val;
-		seg[ind]+=dx;
-		
-		if(l!=r){
-			lazy[2*ind]+=upd_val;
-			lazy[2*ind+1]+=upd_val;
-		}
-		return;
-	}
-	
-	// partial overlap
-	range_update(2*ind,ul,ur,upd_val,l,l+(r-l)/2);
-	range_update(2*ind+1,ul,ur,upd_val,l+(r-l)/2+1,r);
-	
-	seg[ind]=seg[ind*2]+seg[ind*2+1];// change
-}
-
-
-
-
+};
