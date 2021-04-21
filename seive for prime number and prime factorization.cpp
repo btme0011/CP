@@ -1,8 +1,8 @@
 template<typename T>
 struct is_p_seive{
 	ll n;
-	vector<ll> seive;
-	is_p_seive(ll s){
+	vector<ll> seive;// get the seive
+	is_p_seive(ll s){// give the size of the seive
 		n=s;
 		seive=vector<ll>(s,1);
 		make();
@@ -21,8 +21,8 @@ struct is_p_seive{
 template<typename T>
 struct f_seive{
 	ll n;
-	vector<ll> seive;
-	f_seive(ll s){
+	vector<ll> seive;// get the seive
+	f_seive(ll s){// give the size of the seive 
 		n=s;
 		seive=vector<ll>(s,1);
 		make();
