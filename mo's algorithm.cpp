@@ -6,9 +6,8 @@ bool cmp(pair<int, int> p, pair<int, int> q) {
 }
 
 ll ans=0;// answer after removing or adding index
-void remove(idx);  // TODO: remove value at idx from data structure
-void add(idx);     // TODO: add value at idx from data structure
-int get_answer();  // TODO: extract the current answer of the data structure
+void remove(idx);  // TODO: remove value at idx from data structure and change ans
+void add(idx);     // TODO: add value at idx from data structure ans change ans
 
 
 vector<int> mo_s_algorithm(vector<tuple<ll,ll,ll>> queries) {// l,r,idx -> tuple<ll,ll,ll>
@@ -37,7 +36,7 @@ vector<int> mo_s_algorithm(vector<tuple<ll,ll,ll>> queries) {// l,r,idx -> tuple
             remove(cur_r);
             cur_r--;
         }
-        answers[q.idx] = get_answer();
+        answers[q.idx] = ans;
     }
-    return answers;
+    return answers; // answer for all queries
 }
