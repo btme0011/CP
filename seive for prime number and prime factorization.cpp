@@ -1,20 +1,41 @@
-vector<ll> seive(100,1);
-ll n=100;
-for(int i=2;i*i<=n;i++){
-	if(seive[i]==1){
-		for(int j=i*i;j<=n;j+=i){
-			seive[j]=0;
+template<typename T>
+struct is_p_seive{
+	ll n;
+	vector<ll> seive;
+	is_p_seive(ll s){
+		n=s;
+		seive=vector<ll>(s,1);
+		make();
+	}
+	void make(){
+		for(int i=2;i*i<=n;i++){
+			if(seive[i]==1){
+				for(int j=i*i;j<=n;j+=i){
+					seive[j]=0;
+				}
+			}
 		}
 	}
 }
 
-vector<ll> seive(100,1);
-ll n=100;
-for(int i=2;i<=n;i++){
-	if(seive[i]==1){
-		for(int j=i*i;j*j<=n;j+=i){
-			if(seive[j]==0)
-				seive[j]=i;
+template<typename T>
+struct f_seive{
+	ll n;
+	vector<ll> seive;
+	is_p_seive(ll s){
+		n=s;
+		seive=vector<ll>(s,1);
+		make();
+	}
+	void make(){
+		for(int i=2;i<=n;i++){
+			if(seive[i]==1){
+				for(int j=i*i;j<=n;j+=i){
+					if(seive[j]==1)
+						seive[j]=i;
+				}
+			}
 		}
 	}
 }
+
