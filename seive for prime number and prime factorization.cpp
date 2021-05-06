@@ -16,7 +16,7 @@ struct is_p_seive{
 			}
 		}
 	}
-}
+};
 
 template<typename T>
 struct f_seive{
@@ -37,5 +37,5 @@ struct f_seive{
 			}
 		}
 	}
-}
+};
 
