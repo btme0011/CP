@@ -10,7 +10,7 @@ struct is_p_seive{
 	void make(){
 		for(T i=2;i*i<=n;i++){
 			if(seive[i]==1){
-				for(T j=i*i;j<n;j+=i){
+				for(T j=i*i;j<=n;j+=i){
 					seive[j]=0;
 				}
 			}
@@ -30,7 +30,7 @@ struct f_seive{
 	void make(){
 		for(T i=2;i*i<=n;i++){
 			if(seive[i]==1){
-				for(T j=i*i;j<n;j+=i){
+				for(T j=i*i;j<=n;j+=i){
 					if(seive[j]==1)
 						seive[j]=i;
 				}
