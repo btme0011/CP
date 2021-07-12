@@ -1,23 +1,14 @@
-vector<vector<double>> mul(vector<vector<double>> m1,vector<vector<double>> m2){
-	vector<vector<double>> ans(2,vector<double>(2));
-	fo(i,2)
-		fo(j,2)
-			fo(k,2)
-				ans[i][k]+=m1[i][j]*m2[j][k];
-	return ans;
-}
- 
-vector<vector<double>> expo(vector<vector<double>> mat,ll n){
-	vector<vector<double>> ans={{1,0},{0,1}};
-	while(n>0){
-		if(n%2!=0){
-			ans=mul(ans,mat);
-			n--;
-		}else{
-			n/=2;
-			mat=mul(mat,mat);
+struct Matrix{
+	double a[2][2]={{0,0},{0,0}};
+	Matrix operator *(const Matrix& other){
+		Matrix product;
+		for(int i=0;i<2;i++){
+			for(int j=0;j<2;j++){
+				for(int k=0;k<2;k++){
+					product.a[i][k] += this->a[i][j] * other.a[i][k];
+				}
+			}
 		}
+		return product;
 	}
-	
-	return ans;
-}
+};
