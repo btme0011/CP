@@ -10,3 +10,8 @@ int gcd(int a, int b, int& x, int& y) {
     y = x1 - y1 * (a / b);
     return d;
 }
+
+
+x=x0+k(a/g);
+y=y0-k(b/g);
+
