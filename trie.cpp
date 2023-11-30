@@ -1,27 +1,47 @@
-struct node{
-	char ch;
-	node* next[26];
-	bool end;
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+struct Node {
+    Node* next[26];
+    bool end;
 };
 
-void insert(string str,node* head){
-	for(int i=0;i<(ll)str.size();i++){
-		if(head->next[(str[i]-'a')]==NULL){
-			node* nxt=new node;
-			nxt->ch=str[i];
-			nxt->end=0;
-			head->next[(str[i]-'a')]=nxt;
-		}
-		head=head->next[str[i]-'a'];
-		if(i==(ll)str.size()-1) head->end=1;
-	}
+void insert(string str, Node* node) {
+
+    for(auto x:str) {
+        
+        if(node->next[x-'a']==NULL) {
+            Node* tmp = new Node;
+            tmp->end = 0;
+            node->next[x-'a']=tmp;
+        } 
+
+        node = node->next[x-'a'];
+    }
+    node->end = 1;
 }
 
-string solve(){
-	node* head=new node;
-	insert("akhil",head);
-	insert("akmst",head);
-	insert("allmns",head);
-	
-	ret("");
+bool find(string str, Node* node) {
+
+    for(auto x:str) {
+        if(node->next[x-'a'] == NULL) return 0;
+        node = node->next[x-'a'];
+    }
+    return 1;
 }
+
+int main() {
+    Node* head = new Node;
+
+    insert("akhil",head);
+    insert("akhim",head);
+
+    cout<<find("akhil",head)<<endl;
+    cout<<find("nikhil",head)<<endl;
+    cout<<find("akhim",head)<<endl;
+
+
+}
+
+       
