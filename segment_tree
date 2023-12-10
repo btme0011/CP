@@ -2,7 +2,7 @@
 
 using namespace std;
 
-class SegmentTree {
+class SegmentTree { 
 	vector<int> tree;
 	int size;
 
